@@ -1,0 +1,147 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Home Page";
+}
+
+<!--begin::Toolbar-->
+<div class="toolbar" id="kt_toolbar">
+    <!--begin::Container-->
+    <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+        <!--begin::Page title-->
+        <div data-kt-swapper="true" data-kt-swapper-mode="prepend" class="page-title d-flex align-items-center me-3 flex-wrap lh-1 mb-5 mb-lg-0" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}">
+            <!--begin::Title-->
+            <h1 class="d-flex align-items-center text-gray-900 fw-bold my-1 fs-3">Dashboard</h1>
+            <!--end::Title-->
+            <!--begin::Separator-->
+            <span class="h-20px border-gray-200 border-start mx-4"></span>
+            <!--end::Separator-->
+            <!--begin::Breadcrumb-->
+            <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-1">
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">
+                    <a asp-area="" asp-controller="Home" asp-action="Dashboard" class="text-muted text-hover-primary">Home</a>
+                </li>
+                <!--end::Item-->
+
+                <li class="breadcrumb-item">
+                    <span class="bullet bg-gray-300 w-5px h-2px"></span>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-gray-900">Default</li>
+                <!--end::Item-->
+            </ul>
+            <!--end::Breadcrumb-->
+        </div>
+        <!--end::Page title-->
+
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Toolbar-->
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class="container-xxl" style="max-width:100%">
+        <div class="card">
+            <!--begin::Card header-->
+           @*  <div class="card-header border-0 pt-2">
+                <!--begin::Card title-->
+                <div class="card-title">
+                    Filter
+                </div>
+                <!--begin::Card title-->
+            </div>
+            <!--end::Card header-->
+            <div class="separator separator-solid "></div> *@
+            <!--begin::Card body-->
+            <div class="card-body">
+            <!--begin::Row-->
+                <div class="row mb-7 g-5">
+                <!--begin::Col-->
+                <div class="col-xl-3 col-md-6">
+                    <!--begin::Statistic widget - Total-->
+                    <div class="card card-flush h-100">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <span class="fs-2hx fw-bold text-gray-900" id="statTotal">0</span>
+                            <span class="fs-6 fw-semibold text-muted">Total Logs</span>
+                        </div>
+                    </div>
+                    <!--end::Statistic widget - Total-->
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-3 col-md-6">
+                    <!--begin::Statistic widget - Errors-->
+                    <div class="card card-flush h-100">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <span class="fs-2hx fw-bold text-danger" id="statError">0</span>
+                            <span class="fs-6 fw-semibold text-muted">Errors</span>
+                        </div>
+                    </div>
+                    <!--end::Statistic widget - Errors-->
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-3 col-md-6">
+                    <!--begin::Statistic widget - Warnings-->
+                    <div class="card card-flush h-100">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <span class="fs-2hx fw-bold text-warning" id="statWarning">0</span>
+                            <span class="fs-6 fw-semibold text-muted">Warnings</span>
+                        </div>
+                    </div>
+                    <!--end::Statistic widget - Warnings-->
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-xl-3 col-md-6">
+                    <!--begin::Statistic widget - Information-->
+                    <div class="card card-flush h-100">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <span class="fs-2hx fw-bold text-info" id="statInformation">0</span>
+                            <span class="fs-6 fw-semibold text-muted">Information</span>
+                        </div>
+                    </div>
+                    <!--end::Statistic widget - Information-->
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Row-->
+            <!--begin::Row-->
+                <div class="row mb-7">
+                <!--begin::Col-->
+                <div class="col-xl-12">
+                    <!--begin::Chart widget 36-->
+                    <div class="card card-flush overflow-hidden h-lg-100">
+                        <!--begin::Header-->
+                        <div class="card-header pt-5">
+                            <!--begin::Title-->
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bold text-gray-900">Logs - Last 7 Days</span>
+                            </h3>
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Card body-->
+                        <div class="card-body d-flex align-items-end p-0">
+                            <!--begin::Chart-->
+                            <div id="logsTrendChart" style="height: 300px; width: 100%;"></div>
+                            <!--end::Chart-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Chart widget 36-->
+                </div>
+                <!--end::Col-->
+            </div>
+            </div>
+            <!--end::Row-->
+        </div>
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Post-->
+@section Scripts {
+    <script src="~/customjs/home/dashboard.js" asp-append-version="true"></script>
+}

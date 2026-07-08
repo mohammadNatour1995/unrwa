@@ -1,0 +1,26 @@
+.loader-container {
+    z-index: 10000;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    background: black;
+    display: none;
+}
+
+.loader-body {
+    z-index: 10000;
+    margin: 0px auto;
+    width: 0px;
+    text-align: center;
+    height: 100%;
+}
+
+.loader-image {
+    position: fixed;
+    top: 50%;
+    height: 65px;
+    width: 65px;
+    color: black !important;
+}

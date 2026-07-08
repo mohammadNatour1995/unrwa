@@ -1,0 +1,192 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Manage Users";
+}
+
+<div>
+    <!--begin::Toolbar-->
+    <div class="toolbar" id="kt_toolbar">
+        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+
+            <div data-kt-swapper="true" data-kt-swapper-mode="prepend" class="page-title d-flex align-items-center me-3 flex-wrap lh-1 mb-5 mb-lg-0" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}">
+                <h1 class="text-gray-900 fw-bold my-1 fs-3">
+                    Manage Users
+                </h1>
+
+                <span class="h-20px border-gray-200 border-start mx-4"></span>
+
+                <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-1">
+                    <li class="breadcrumb-item text-muted">
+                        <a asp-controller="Home" asp-action="Dashboard"
+                           class="text-muted text-hover-primary">Home</a>
+                    </li>
+
+                    <li class="breadcrumb-item">
+                        <span class="bullet bg-gray-300 w-5px h-2px"></span>
+                    </li>
+
+                    <li class="breadcrumb-item text-muted">
+                        Users
+                    </li>
+
+                    <li class="breadcrumb-item">
+                        <span class="bullet bg-gray-300 w-5px h-2px"></span>
+                    </li>
+
+                    <li class="breadcrumb-item text-gray-900">Manage</li>
+                </ul>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-flex align-items-center py-1">
+                <button type="button" id="btnAddUser" class="btn btn-sm btn-primary">
+                    <i class="ki-outline ki-plus fs-5"></i>Add User
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!--begin::Post-->
+    <div class="post d-flex flex-column-fluid" id="kt_post">
+        <div id="kt_content_container" class="container-xxl" style="max-width:100%">
+
+            <div class="d-flex flex-column flex-lg-row-fluid gap-7 gap-lg-10">
+
+                <!-- Filter Card -->
+                <div class="card">
+                    <div class="card-header border-0 pt-2">
+                        <div class="card-title">Filter</div>
+                    </div>
+
+                    <div class="separator separator-solid"></div>
+
+                    <div class="card-body">
+
+                        <div class="row mb-7">
+
+                            <!-- User Name -->
+                            <div class="col-md-6">
+                                <label class="form-label">User Name</label>
+                                <input class="form-control"
+                                       id="txtUserName"
+                                       placeholder="User Name">
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input class="form-control"
+                                       id="txtEmail"
+                                       placeholder="Email">
+                            </div>
+
+                        </div>
+
+                        <div class="d-flex justify-content-end align-items-center mt-5">
+                            <input value="Clear"
+                                   type="button"
+                                   id="btnClear"
+                                   class="btn btn-light me-5" />
+
+                            <input type="button"
+                                   class="btn btn-primary"
+                                   value="Filter"
+                                   id="btnFilter">
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Table Card -->
+                <div class="card">
+                    <div>
+                        <div id="divTable" class="table-responsive"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--begin::Add/Edit Modal-->
+<div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h2 class="fw-bolder" id="userModalTitle">Add User</h2>
+
+                <div class="btn btn-icon btn-sm btn-active-icon-primary"
+                     data-bs-dismiss="modal">
+                    <i class="ki-duotone ki-cross fs-1"></i>
+                </div>
+            </div>
+
+            <div class="modal-body py-5 px-10">
+
+                <form id="frmUser">
+
+                    <input type="hidden" id="hfUserId" />
+
+                    <div class="row mb-5">
+                        <div class="col-md-6">
+                            <label class="required form-label">User Name</label>
+                            <input class="form-control RequiredElement" id="txtFormUserName" name="UserName" maxlength="100" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="required form-label">Full Name</label>
+                            <input class="form-control RequiredElement" id="txtFormFullName" name="FullName" maxlength="200" />
+                        </div>
+                    </div>
+
+                    <div class="row mb-5">
+                        <div class="col-md-6">
+                            <label class="required form-label">Email</label>
+                            <input class="form-control RequiredEmail" id="txtFormEmail" name="Email" maxlength="256" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone Number</label>
+                            <input class="form-control NumberOnly" id="txtFormPhoneNumber" name="PhoneNumber" maxlength="20" />
+                        </div>
+                    </div>
+
+                    <div class="row mb-5">
+                        <div class="col-md-6">
+                            <label class="required form-label">Role</label>
+                            <select id="ddlFormRole" class="form-select RequiredSelect" data-control="select2" data-placeholder="Please Select">
+                                <option value="-1">Please Select</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6" id="divFormIsActive" style="display:none;">
+                            <label class="form-label d-block">Active</label>
+                            <div class="form-check form-switch form-check-custom form-check-solid">
+                                <input class="form-check-input" type="checkbox" id="chkFormIsActive" checked />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-5" id="divFormPassword">
+                        <div class="col-md-6">
+                            <label class="required form-label">Password</label>
+                            <input type="password" class="form-control PasswordStrong" id="txtFormPassword" name="Password" />
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="modal-footer flex-center">
+                <input type="button" id="btnSaveUser" value="Save" class="btn btn-primary" />
+                <input type="button" value="Cancel" class="btn btn-light" data-bs-dismiss="modal" />
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--end::Add/Edit Modal-->
+
+@section Scripts {
+    <script src="~/customjs/Admins/Users/manage.js" asp-append-version="true"></script>
+}

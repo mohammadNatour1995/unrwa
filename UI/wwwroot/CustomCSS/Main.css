@@ -1,0 +1,79 @@
+.loader-container {
+    z-index: 10000;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    background: black;
+    display: none;
+}
+#kt_aside_menu {
+    background-color: #2f5bb7;
+    color: #ffffff;
+}
+.aside-menu .menu-item.hover:not(.here) > .menu-link:not(.disabled):not(.active):not(.here), .aside-menu .menu-item:not(.here) .menu-link:hover:not(.disabled):not(.active):not(.here) {
+    background-color: #0033A0;
+}
+#aside-menu {
+    background-color: #2f5bb7;
+}
+.aside .aside-logo {
+    background-color: #ffffff;
+}
+.header{
+
+}
+.aside {
+    background-color: #2f5bb7;
+    color: #ffffff;
+}
+.aside-menu .menu-item .menu-link.active {
+    background-color: #0033A0;
+}
+.kt-aside-menu .kt-menu__nav > .kt-menu__item.kt-menu__item--active > .kt-menu__heading .kt-menu__link-icon, .kt-aside-menu .kt-menu__nav > .kt-menu__item.kt-menu__item--active > .kt-menu__link .kt-menu__link-icon {
+    background-color: #0033A0;
+}
+.aside-menu .menu-item .menu-link .menu-title {
+    color: #ffffff;
+}
+.aside-menu .menu-item .menu-link .menu-icon, .aside-menu .menu-item .menu-link .menu-icon .svg-icon, .aside-menu .menu-item .menu-link .menu-icon i {
+    color: #ffffff;
+}
+#kt_aside_menu_wrapper {
+    background-color: #2f5bb7;
+    color: #ffffff;
+}
+
+.loader-body {
+    z-index: 10000;
+    margin: 0px auto;
+    width: 0px;
+    text-align: center;
+    height: 100%;
+}
+
+.loader-image {
+    position: fixed;
+    top: 50%;
+    height: 65px;
+    width: 65px;
+    color: black !important;
+}
+.checkInColor {
+    background-color: blanchedalmond !important;
+}
+.checkOutColor {
+    background-color: darkseagreen !important;
+}
+.aproveColor {
+    background-color: #a2dfb7 !important;
+}
+.rejectColor {
+    background-color: #f998a6 !important;
+}
+.required-label:after {
+    content: "*";
+    color: red;
+    margin-left: 2px;
+}
