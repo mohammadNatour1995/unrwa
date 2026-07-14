@@ -2,12 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Domain.Interfaces;
-using Domain.Interfaces.Auth;
-using Domain.Interfaces.Lookup;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
-using Infrastructure.Persistence.Repositories.Auth;
-using Infrastructure.Persistence.Repositories.Lookup;
 
 namespace Application;
 
@@ -25,8 +21,9 @@ public static class InfrastructureInjection
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-        services.AddScoped<IExceptionsRepository, ExceptionsRepository>();
+        services.AddScoped(typeof(IEFBaseRepository<>), typeof(EFBaseRepository<>));
+        services.AddScoped(typeof(IEFBaseLookupRepository<>), typeof(EFBaseLookupRepository<>));
+        services.AddScoped(typeof(IDapperRepository<>), typeof(DapperRepository<>));
 
         return services;
     }

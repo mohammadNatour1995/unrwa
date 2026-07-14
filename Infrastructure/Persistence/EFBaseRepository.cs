@@ -5,10 +5,10 @@ using Domain.Interfaces;
 
 namespace Infrastructure.Persistence.Repositories;
 
-public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
+public class EFBaseRepository<T> : IEFBaseRepository<T> where T : BaseEntity
 {
     protected readonly ApplicationDbContext _context;
-    public BaseRepository(ApplicationDbContext context)
+    public EFBaseRepository(ApplicationDbContext context)
     {
         _context = context;
     }
@@ -52,10 +52,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         return entity;
     }
 }
-public class BaseLookupRepository<T> : IBaseLookupRepository<T> where T : class, IBaseLookup
+public class EFBaseLookupRepository<T> : IEFBaseLookupRepository<T> where T : class, IBaseLookup
 {
     protected readonly ApplicationDbContext _context;
-    public BaseLookupRepository(ApplicationDbContext context)
+    public EFBaseLookupRepository(ApplicationDbContext context)
     {
         _context = context;
     }

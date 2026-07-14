@@ -6,6 +6,7 @@ using Domain.Entities.Users;
 using Domain.Interfaces;
 using Domain.Interfaces.Auth;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -19,14 +20,14 @@ namespace Application.Services.Auth
     {
         private readonly JwtSettings _jwtSettings;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IEFBaseRepository<RefreshToken> _refreshTokenRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILoggerManager<JwtService> _loggerManager;
 
         public JwtService(
             IOptions<JwtSettings> jwtSettings,
             UserManager<ApplicationUser> userManager,
-            IRefreshTokenRepository refreshTokenRepository,
+            IEFBaseRepository<RefreshToken> refreshTokenRepository,
             IUnitOfWork unitOfWork,
             ILoggerManager<JwtService> loggerManager)
         {
@@ -39,7 +40,7 @@ namespace Application.Services.Auth
 
         public async Task<LoginResponseDto> GenerateTokensAsync(ApplicationUser user)
         {
-            await _refreshTokenRepository.RevokeAllForUserAsync(user.Id);
+            await RevokeAllForUserAsync(user.Id);
 
             var accessToken = await GenerateAccessTokenAsync(user);
             var refreshToken = await GenerateRefreshTokenAsync(user);
@@ -66,7 +67,8 @@ namespace Application.Services.Auth
 
         public async Task<RefreshTokenResponseDto> RefreshTokenAsync(string? accessToken, string refreshToken)
         {
-            var tokenEntity = await _refreshTokenRepository.FindByTokenAsync(refreshToken);
+            var tokenEntity = await _refreshTokenRepository.Query(tracking: true)
+                .FirstOrDefaultAsync(rt => rt.Token == refreshToken);
             if (tokenEntity == null || tokenEntity.IsRevoked || tokenEntity.ExpiryDate < DateTime.UtcNow)
                 throw new SecurityTokenException("Refresh token is invalid or expired.");
 
@@ -96,7 +98,7 @@ namespace Application.Services.Auth
             tokenEntity.IsRevoked = true;
             tokenEntity.RevokedDate = DateTime.UtcNow;
             tokenEntity.ReasonRevoked = "Replaced by new token";
-            await _refreshTokenRepository.UpdateAsync(tokenEntity);
+            _refreshTokenRepository.Update(tokenEntity);
 
             var newAccessToken = await GenerateAccessTokenAsync(user);
             var newRefreshToken = await GenerateRefreshTokenAsync(user);
@@ -114,7 +116,8 @@ namespace Application.Services.Auth
 
         public async Task<bool> RevokeRefreshTokenAsync(string refreshToken, string reason = "Revoked by user")
         {
-            var tokenEntity = await _refreshTokenRepository.FindByTokenAsync(refreshToken);
+            var tokenEntity = await _refreshTokenRepository.Query(tracking: true)
+                .FirstOrDefaultAsync(rt => rt.Token == refreshToken);
             if (tokenEntity == null)
                 return false;
 
@@ -122,9 +125,26 @@ namespace Application.Services.Auth
             tokenEntity.RevokedDate = DateTime.UtcNow;
             tokenEntity.ReasonRevoked = reason;
 
-            await _refreshTokenRepository.UpdateAsync(tokenEntity);
+            _refreshTokenRepository.Update(tokenEntity);
             await _unitOfWork.SaveChangesAsync();
             return true;
+        }
+
+        private async Task RevokeAllForUserAsync(string userId, string reason = "Superseded by new login")
+        {
+            var active = await _refreshTokenRepository.Query(tracking: true)
+                .Where(rt => rt.UserId == userId && !rt.IsRevoked)
+                .ToListAsync();
+
+            if (active.Count == 0) return;
+
+            var now = DateTime.UtcNow;
+            foreach (var token in active)
+            {
+                token.IsRevoked = true;
+                token.RevokedDate = now;
+                token.ReasonRevoked = reason;
+            }
         }
 
         private async Task<string> GenerateAccessTokenAsync(ApplicationUser user)
@@ -173,7 +193,7 @@ namespace Application.Services.Auth
                 CreatedDate = DateTime.UtcNow
             };
 
-            await _refreshTokenRepository.CreateAsync(refreshTokenEntity);
+            await _refreshTokenRepository.AddAsync(refreshTokenEntity);
             return refreshToken;
         }
 

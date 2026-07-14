@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Domain.Entities.Auth;
 
 [Table("RefreshTokens")]
-public class RefreshToken
+public class RefreshToken : BaseEntity
 {
     [Key]
     public string Token { get; set; } = string.Empty;

@@ -2,7 +2,7 @@
 
 namespace Domain.Interfaces;
 
-public interface IBaseRepository<T> where T : BaseEntity
+public interface IEFBaseRepository<T> where T : BaseEntity
 {
     Task<T> AddAsync(T entity, CancellationToken cancellationToken = default);
     Task<T?> FindAsync(Guid id, CancellationToken cancellationToken = default);
@@ -11,7 +11,7 @@ public interface IBaseRepository<T> where T : BaseEntity
     T Delete(T entity);
 }
 
-public interface IBaseLookupRepository<T> where T : IBaseLookup
+public interface IEFBaseLookupRepository<T> where T : IBaseLookup
 {
     Task<T> AddAsync(T entity, CancellationToken cancellationToken = default);
     Task<T?> FindAsync(Guid id, CancellationToken cancellationToken = default);
